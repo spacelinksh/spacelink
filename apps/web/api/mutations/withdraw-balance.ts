@@ -3,8 +3,8 @@ import { TypedDocumentNode, gql } from "@apollo/client";
 
 export const WITHDRAW_BALANCE: TypedDocumentNode<{
   withdrawBalance: Wallet;
-  withdrawValue: Number;
-  financialAccountId: String;
+  withdrawValue: number;
+  financialAccountId: string;
 }> = gql`
   mutation WITHDRAW_BALANCE(
     $withdrawValue: Float!
