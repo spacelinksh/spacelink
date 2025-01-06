@@ -1,30 +1,41 @@
-import { Geist, Geist_Mono } from "next/font/google"
+import "@workspace/ui/styles/globals.css";
+import { ThemeProvider } from "@workspace/ui/components/theme-provider";
+import type { Metadata } from "next";
+import { Outfit, Noto_Sans_Mono } from "next/font/google";
+import { Toaster } from "sonner";
+import ApolloProvider from "../providers/apollo-provider";
+import { Suspense } from "react";
 
-import "@workspace/ui/globals.css"
-import { Providers } from "@/components/providers"
-
-const fontSans = Geist({
+const outfit = Outfit({
   subsets: ["latin"],
-  variable: "--font-sans",
-})
+});
 
-const fontMono = Geist_Mono({
+const notoMono = Noto_Sans_Mono({
   subsets: ["latin"],
-  variable: "--font-mono",
-})
+});
+
+export const metadata: Metadata = {
+  title: "Spacelink | Pulsar",
+  description: "Pulsar software from Spacelink",
+};
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+}: {
+  children: React.ReactNode;
+}): JSX.Element {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="pt-BR" suppressHydrationWarning>
       <body
-        className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased `}
+        className={`${outfit.className} ${notoMono.className} antialiased font-sans`}
       >
-        <Providers>{children}</Providers>
+        <Suspense fallback={<p>Loading...</p>}>
+          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+            <ApolloProvider>{children}</ApolloProvider>
+            <Toaster richColors />
+          </ThemeProvider>
+        </Suspense>
       </body>
     </html>
-  )
+  );
 }

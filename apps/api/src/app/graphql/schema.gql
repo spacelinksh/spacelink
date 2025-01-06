@@ -1,0 +1,238 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Wallet {
+  """ID field"""
+  id: ID!
+
+  """Creation date"""
+  createdAt: DateTime!
+
+  """Update date"""
+  updatedAt: DateTime!
+
+  """Wallet balance amount"""
+  balance: Float!
+
+  """Is active status of the wallet"""
+  isActive: Boolean!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type User {
+  """ID field"""
+  id: ID!
+
+  """Creation date"""
+  createdAt: DateTime!
+
+  """Update date"""
+  updatedAt: DateTime!
+
+  """Name of the user"""
+  name: String!
+
+  """Email of the user"""
+  email: String!
+
+  """Phone of the user"""
+  phone: String!
+
+  """Document (CPF) of the user"""
+  document: String!
+
+  """Name of the user"""
+  role: RoleEnum!
+
+  """Wallet of the user"""
+  wallet: Wallet!
+}
+
+enum RoleEnum {
+  USER
+  ADMIN
+}
+
+type Auth {
+  """User logged in"""
+  user: User!
+
+  """Session access token"""
+  accessToken: String!
+}
+
+type Customer {
+  """ID field"""
+  id: ID!
+
+  """Creation date"""
+  createdAt: DateTime!
+
+  """Update date"""
+  updatedAt: DateTime!
+
+  """Name of the user"""
+  name: String!
+
+  """Email of the user"""
+  email: String!
+
+  """Phone of the user"""
+  phone: String!
+
+  """Document (CPF) of the user"""
+  document: String!
+}
+
+type FinancialAccount {
+  """ID field"""
+  id: ID!
+
+  """Creation date"""
+  createdAt: DateTime!
+
+  """Update date"""
+  updatedAt: DateTime!
+
+  """Account number with digit"""
+  account: String!
+
+  """Agency number with digit"""
+  agency: String!
+
+  """Bank holder number with digit"""
+  bankHolder: String!
+
+  """Transfer key (PIX)"""
+  transferKey: String!
+
+  """Transfer key type"""
+  transferKeyType: TransferKeyType!
+}
+
+enum TransferKeyType {
+  CPF
+  EMAIL
+  ALL
+  PHONE
+}
+
+type Transfer {
+  """ID field"""
+  id: ID!
+
+  """Creation date"""
+  createdAt: DateTime!
+
+  """Update date"""
+  updatedAt: DateTime!
+
+  """Total value of the transfer"""
+  transferValue: String!
+
+  """Financial account of the transfer"""
+  financialAccount: FinancialAccount!
+
+  """User of the transfer"""
+  user: User!
+
+  """Status of the transfer"""
+  status: TransferStatus!
+
+  """Transaction token for gateway"""
+  token: String!
+}
+
+enum TransferStatus {
+  PENDING
+  DONE
+  CANCELED
+  ISSUE
+}
+
+type Query {
+  getUsers: [User!]!
+  getUser(id: String!): User!
+  getCurrentUser: User!
+  getUserWallet: User!
+  getUserByEmail(email: String!): User!
+  getCustomers: [Customer!]!
+  getCustomer(id: String!): Customer!
+  getFinancialAccounts: [FinancialAccount!]!
+  getFinancialAccount(id: String!): FinancialAccount!
+  deleteFinancialAccount(id: String!): FinancialAccount!
+}
+
+type Mutation {
+  signIn(signInInput: SignInInput!): Auth!
+  createUser(createUserInput: CreateUserInput!): User!
+  withdrawBalance(withdrawValue: Float!, financialAccountId: String!): Wallet!
+  createCustomer(createCustomerInput: CreateCustomerInput!): Customer!
+  deleteCustomer(id: String!): Customer!
+  createFinancialAccount(createCustomerInput: CreateFinancialAccountInput!): FinancialAccount!
+  cancelTransfer(withdrawValue: Float!, transferId: String!): Transfer!
+}
+
+input SignInInput {
+  """Email of the user"""
+  email: String!
+
+  """Password of the user"""
+  normalizedPassword: String!
+}
+
+input CreateUserInput {
+  """Name of the user"""
+  name: String!
+
+  """Email of the user"""
+  email: String!
+
+  """Phone of the user"""
+  phone: String!
+
+  """Password of the user"""
+  password: String!
+
+  """Document (CPF) of the user"""
+  document: String!
+
+  """Role of the user"""
+  role: RoleEnum!
+}
+
+input CreateCustomerInput {
+  """Name of the customer"""
+  name: String!
+
+  """Email of the customer"""
+  email: String!
+
+  """Phone of the customer"""
+  phone: String!
+
+  """Document (CPF) of the customer"""
+  document: String!
+}
+
+input CreateFinancialAccountInput {
+  """Account number with digit"""
+  account: String!
+
+  """Agency number with digit"""
+  agency: String!
+
+  """Bank holder number with digit"""
+  bankHolder: String!
+
+  """Transfer key (PIX)"""
+  transferKey: String!
+
+  """Transfer key type"""
+  transferKeyType: TransferKeyType!
+}
