@@ -1,7 +1,5 @@
-import { Field, InputType, registerEnumType } from '@nestjs/graphql';
-import { RoleEnum } from '@prisma/client';
+import { Field, InputType } from '@nestjs/graphql';
 
-registerEnumType(RoleEnum, { name: 'RoleEnum' });
 @InputType()
 export class CreateUserInput {
   @Field(() => String, { description: 'Name of the user' })
@@ -18,7 +16,4 @@ export class CreateUserInput {
 
   @Field(() => String, { description: 'Document (CPF) of the user' })
   document: string;
-
-  @Field(() => RoleEnum, { description: 'Role of the user' })
-  role: RoleEnum;
 }
