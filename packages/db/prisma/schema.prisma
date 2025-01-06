@@ -1,0 +1,119 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum RoleEnum {
+  USER
+  ADMIN
+}
+
+model Users {
+  id String @id @default(cuid())
+
+  name         String
+  email        String   @unique
+  phone        String   @unique
+  password     String
+  document     String   @unique
+  role         RoleEnum @default(USER)
+  walletId     String
+  referralCode String?  @unique
+
+  wallet           Wallets            @relation(fields: [walletId], references: [id])
+  customers        Customers[]
+  financialAccount FinancialAccount[]
+  transfers        Transfers[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+}
+
+model AuthLink {
+  id String @id @default(cuid())
+
+  referralCode String
+  userId       String
+  isActive     Boolean
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+}
+
+model Customers {
+  id String @id @default(cuid())
+
+  name             String
+  email            String @unique
+  phone            String @unique
+  document         String @unique
+  userAssociatedId String
+
+  userAssociated Users @relation(fields: [userAssociatedId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+}
+
+model Wallets {
+  id String @id @default(cuid())
+
+  balance  Float   @default(0.0)
+  isActive Boolean @default(true)
+
+  users Users[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+}
+
+enum TransferKeyType {
+  CPF
+  EMAIL
+  ALL
+  PHONE
+}
+
+model FinancialAccount {
+  id String @id @default(cuid())
+
+  account         String          @unique
+  agency          String
+  bankHolder      String?
+  transferKey     String          @unique
+  transferKeyType TransferKeyType
+  userId          String
+
+  users     Users       @relation(fields: [userId], references: [id])
+  transfers Transfers[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+}
+
+enum TransferStatus {
+  PENDING
+  DONE
+  CANCELED
+  ISSUE
+}
+
+model Transfers {
+  id String @id @default(cuid())
+
+  transferValue      Float
+  financialAccountId String
+  userId             String
+  status             TransferStatus
+  token              String         @unique
+
+  user             Users            @relation(fields: [userId], references: [id])
+  financialAccount FinancialAccount @relation(fields: [financialAccountId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+}
