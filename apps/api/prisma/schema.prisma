@@ -7,22 +7,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum RoleEnum {
-  USER
-  ADMIN
-}
-
 model Users {
   id String @id @default(cuid())
 
   name         String
-  email        String   @unique
-  phone        String   @unique
+  email        String  @unique
+  phone        String  @unique
   password     String
-  document     String   @unique
-  role         RoleEnum @default(USER)
+  document     String  @unique
   walletId     String
-  referralCode String?  @unique
+  referralCode String? @unique
 
   wallet           Wallets            @relation(fields: [walletId], references: [id])
   customers        Customers[]
@@ -71,22 +65,14 @@ model Wallets {
   updatedAt DateTime @updatedAt()
 }
 
-enum TransferKeyType {
-  CPF
-  EMAIL
-  ALL
-  PHONE
-}
-
 model FinancialAccount {
   id String @id @default(cuid())
 
-  account         String          @unique
-  agency          String
-  bankHolder      String?
-  transferKey     String          @unique
-  transferKeyType TransferKeyType
-  userId          String
+  account     String  @unique
+  agency      String
+  bankHolder  String?
+  transferKey String  @unique
+  userId      String
 
   users     Users       @relation(fields: [userId], references: [id])
   transfers Transfers[]
@@ -95,21 +81,13 @@ model FinancialAccount {
   updatedAt DateTime @updatedAt()
 }
 
-enum TransferStatus {
-  PENDING
-  DONE
-  CANCELED
-  ISSUE
-}
-
 model Transfers {
   id String @id @default(cuid())
 
   transferValue      Float
   financialAccountId String
   userId             String
-  status             TransferStatus
-  token              String         @unique
+  token              String @unique
 
   user             Users            @relation(fields: [userId], references: [id])
   financialAccount FinancialAccount @relation(fields: [financialAccountId], references: [id])
