@@ -42,9 +42,7 @@ export class TransfersService {
     const withdrawBalance = await this.prisma.$transaction(async (prisma) => {
       await prisma.transfers.update({
         where: { id: transfer.id },
-        data: {
-          status: 'CANCELED',
-        },
+        data: {},
       });
 
       const updateWallet = prisma.wallets.update({

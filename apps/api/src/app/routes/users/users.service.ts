@@ -55,7 +55,7 @@ export class UserService {
   }
 
   async create(createUserInput: CreateUserInput) {
-    const { name, email, phone, password, document, role } = createUserInput;
+    const { name, email, phone, password, document } = createUserInput;
 
     const hashPassword = await bcrypt.hash(password, 10);
 
@@ -66,7 +66,6 @@ export class UserService {
         phone,
         password: hashPassword,
         document,
-        role,
         wallet: {
           create: {
             balance: 0,
@@ -116,7 +115,6 @@ export class UserService {
     const withdrawBalance = await this.prisma.$transaction(async (prisma) => {
       await prisma.transfers.create({
         data: {
-          status: 'PENDING',
           token: transferToken,
           transferValue: withdrawValue,
           user: {

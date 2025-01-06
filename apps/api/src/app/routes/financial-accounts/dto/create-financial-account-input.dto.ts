@@ -1,7 +1,5 @@
-import { Field, InputType, registerEnumType } from '@nestjs/graphql';
-import { TransferKeyType } from '@prisma/client';
+import { Field, InputType } from '@nestjs/graphql';
 
-registerEnumType(TransferKeyType, { name: 'TransferKeyType' });
 @InputType()
 export class CreateFinancialAccountInput {
   @Field(() => String, { description: 'Account number with digit' })
@@ -15,7 +13,4 @@ export class CreateFinancialAccountInput {
 
   @Field(() => String, { description: 'Transfer key (PIX)' })
   transferKey: string;
-
-  @Field(() => TransferKeyType, { description: 'Transfer key type' })
-  transferKeyType: TransferKeyType;
 }

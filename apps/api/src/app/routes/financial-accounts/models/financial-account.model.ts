@@ -1,8 +1,6 @@
-import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
-import { TransferKeyType } from '@prisma/client';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { BaseModel } from 'src/app/utils/types/base-model';
 
-registerEnumType(TransferKeyType, { name: 'TransferKeyType' });
 @ObjectType()
 export class FinancialAccount extends BaseModel {
   @Field(() => String, { description: 'Account number with digit' })
@@ -16,7 +14,4 @@ export class FinancialAccount extends BaseModel {
 
   @Field(() => String, { description: 'Transfer key (PIX)' })
   transferKey: string;
-
-  @Field(() => TransferKeyType, { description: 'Transfer key type' })
-  transferKeyType: TransferKeyType;
 }

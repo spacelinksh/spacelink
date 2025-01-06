@@ -1,9 +1,7 @@
-import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
-import { RoleEnum } from '@prisma/client';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { BaseModel } from 'src/app/utils/types/base-model';
 import { Wallet } from './wallet.model';
 
-registerEnumType(RoleEnum, { name: 'RoleEnum' });
 @ObjectType()
 export class User extends BaseModel {
   @Field(() => String, { description: 'Name of the user' })
@@ -17,9 +15,6 @@ export class User extends BaseModel {
 
   @Field(() => String, { description: 'Document (CPF) of the user' })
   document: string;
-
-  @Field(() => RoleEnum, { description: 'Name of the user' })
-  role: RoleEnum;
 
   @Field(() => Wallet, { description: 'Wallet of the user' })
   wallet: Wallet;

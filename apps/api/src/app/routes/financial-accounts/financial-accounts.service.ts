@@ -22,7 +22,7 @@ export class FinancialAccountService {
     userId: string,
     createFinancialAccountInput: CreateFinancialAccountInput,
   ) {
-    const { account, agency, bankHolder, transferKey, transferKeyType } =
+    const { account, agency, bankHolder, transferKey } =
       createFinancialAccountInput;
 
     const createFinancialAccount = this.prisma.financialAccount.create({
@@ -31,7 +31,6 @@ export class FinancialAccountService {
         agency,
         bankHolder,
         transferKey,
-        transferKeyType,
         users: {
           connect: {
             id: userId,
